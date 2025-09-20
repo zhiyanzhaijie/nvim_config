@@ -15,6 +15,6 @@ rm -rf ~/.cache/nvim
 
 ## Install
 
-```bash
+``
 git clone https://github.com/jerryshell/mnv ~/.config/nvim
 ```
