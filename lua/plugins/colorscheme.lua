@@ -19,7 +19,7 @@ return {
         highlights["@string.documentation"] = { fg = "#95aa67" }
         highlights["@string.regex"] = { fg = "#95aa67" }
         highlights["@string.escape"] = { fg = "#95aa67" }
-        
+
         -- 将数字的颜色改为和 boolean 一样 (blue2: "#66b2b2")
         highlights.Number = { fg = colors.blue2 }
         highlights.Float = { fg = colors.blue2 }
@@ -79,5 +79,57 @@ return {
         },
       },
     },
+  },
+  {
+    "armannikoyan/rusty",
+    lazy = true,
+    priority = 1000,
+    opts = {
+      transparent = true,
+      italic_comments = true,
+      underline_current_line = true,
+      colors = {
+        foreground = "#c5c8c6",
+        background = "#1d1f21",
+        selection = "#373b41",
+        line = "#282a2e",
+        comment = "#969896",
+        red = "#cc6666",
+        orange = "#de935f",
+        yellow = "#f0c674",
+        green = "#b5bd68",
+        aqua = "#8abeb7",
+        blue = "#81a2be",
+        purple = "#b294bb",
+        window = "#4d5057",
+      },
+    },
+    config = function(_, opts)
+      require("rusty").setup(opts)
+      -- Don't set as default, keep monoglow as default
+      -- vim.cmd("colorscheme rusty")
+    end,
+  },
+  {
+    "datsfilipe/vesper.nvim",
+    lazy = true,
+    priority = 1000,
+    opts = {
+      transparent = false,
+      italics = {
+        comments = true,
+        keywords = true,
+        functions = true,
+        strings = true,
+        variables = true,
+      },
+      overrides = {},
+      palette_overrides = {},
+    },
+    config = function(_, opts)
+      require("vesper").setup(opts)
+      -- Don't set as default, keep monoglow as default
+      -- vim.cmd.colorscheme("vesper")
+    end,
   },
 }

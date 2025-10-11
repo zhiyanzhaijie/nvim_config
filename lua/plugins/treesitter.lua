@@ -60,33 +60,73 @@ return {
     event = "VeryLazy",
     enabled = true,
     config = function()
-      -- 延迟加载直到需要时
-      local move = require("nvim-treesitter.textobjects.move")
-      local configs = require("nvim-treesitter.configs")
-      for name, fn in pairs(move) do
-        if name:find("goto") == 1 then
-          move[name] = function(q, ...)
-            if vim.wo.diff then
-              local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
-              for key, query in pairs(config or {}) do
-                if q == query and key:find("[%]%[][cC]") then
-                  vim.cmd("normal! " .. key)
-                  return
-                end
-              end
-            end
-            return fn(q, ...)
+      -- 新版本 nvim-treesitter-textobjects 使用不同的模块路径
+      local ok_move, move = pcall(require, "nvim-treesitter-textobjects.move")
+      if not ok_move then
+        vim.notify("nvim-treesitter-textobjects.move not found", vim.log.levels.WARN)
+        return
+      end
+      
+      -- 在 diff 模式下，使用 vim 原生的跳转
+      local goto_next_start = move.goto_next_start
+      local goto_next_end = move.goto_next_end
+      local goto_previous_start = move.goto_previous_start
+      local goto_previous_end = move.goto_previous_end
+      
+      move.goto_next_start = function(query, ...)
+        if vim.wo.diff then
+          if query == "@function.outer" then
+            vim.cmd("normal! ]c")
+            return
           end
         end
+        return goto_next_start(query, ...)
+      end
+      
+      move.goto_previous_start = function(query, ...)
+        if vim.wo.diff then
+          if query == "@function.outer" then
+            vim.cmd("normal! [c")
+            return
+          end
+        end
+        return goto_previous_start(query, ...)
       end
     end,
     opts = {
       move = {
         enable = true,
-        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer" },
-        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer" },
-        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer" },
-        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer" },
+        set_jumps = true,
+        goto_next_start = { 
+          ["]f"] = "@function.outer", 
+          ["]c"] = "@class.outer",
+          ["]a"] = "@parameter.inner",
+        },
+        goto_next_end = { 
+          ["]F"] = "@function.outer", 
+          ["]C"] = "@class.outer",
+          ["]A"] = "@parameter.inner",
+        },
+        goto_previous_start = { 
+          ["[f"] = "@function.outer", 
+          ["[c"] = "@class.outer",
+          ["[a"] = "@parameter.inner",
+        },
+        goto_previous_end = { 
+          ["[F"] = "@function.outer", 
+          ["[C"] = "@class.outer",
+          ["[A"] = "@parameter.inner",
+        },
+      },
+      select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+          ["af"] = "@function.outer",
+          ["if"] = "@function.inner",
+          ["ac"] = "@class.outer",
+          ["ic"] = "@class.inner",
+        },
       },
     },
   },
