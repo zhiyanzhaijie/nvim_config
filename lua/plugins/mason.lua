@@ -6,7 +6,6 @@ return {
   opts = {
     ensure_installed = {
       "html-lsp",
-      "typescript-language-server",
       "tailwindcss-language-server",
     },
   },

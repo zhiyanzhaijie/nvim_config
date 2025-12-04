@@ -5,8 +5,8 @@ return {
     opts = {
       servers = {
         tailwindcss = {
-          -- 指定哪些文件类型启用 Tailwind CSS IntelliSense
           filetypes = {
+            "rust",
             "html",
             "css",
             "scss",
@@ -17,7 +17,6 @@ return {
             "vue",
             "svelte",
             "astro",
-            "php",
             "blade",
             "twig",
             "handlebars",
@@ -44,14 +43,16 @@ return {
               experimental = {
                 classRegex = {
                   "tw`([^`]*)",
-                  "tw=\"([^\"]*)",
-                  "tw={\"([^\"}]*)",
+                  'tw="([^"]*)',
+                  'tw={"([^"}]*)',
                   "tw\\.\\w+`([^`]*)",
                   "tw\\(.*?\\)`([^`]*)",
                   { "clsx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
                   { "classnames\\(([^)]*)\\)", "'([^']*)'" },
                   { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
                   { "cn\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" },
+                  -- Dioxus RSX class
+                  'class:\\s*"([^"]*)',
                 },
               },
             },

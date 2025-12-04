@@ -36,8 +36,10 @@ return {
           end
           
           if clipboard.paste(target_dir) then
-            -- 刷新 neo-tree
-            require("neo-tree.sources.manager").refresh("filesystem")
+            -- 刷新 neo-tree (使用 vim.schedule 确保在安全的上下文中执行)
+            vim.schedule(function()
+              require("neo-tree.sources.manager").refresh("filesystem")
+            end)
           end
         end,
         -- 剪切文件/文件夹
