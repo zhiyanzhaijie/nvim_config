@@ -6,6 +6,7 @@ opt.relativenumber = false
 -- opt.scrolloff = 16
 
 -- GUI字体设置
+vim.opt.guifont = "Maple Mono NF CN:h13" -- 尝试设置稍大一点，并简化配置测试
 -- opt.guifont = "Maple Mono NF CN:h12,Maple Mono NF:h12,JetBrainsMono Nerd Font:h12,Maple Mono:h12"
 opt.emoji = true -- 支持emoji显示
 
